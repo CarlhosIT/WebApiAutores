@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApiAutores.Filtros;
 using WebApiAutores.Middleware;
 using WebApiAutores.Servicios;
 
@@ -31,7 +33,10 @@ namespace WebApiAutores
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers(opcione => 
+                opcione.Filters.Add(typeof(FiltroExepcion))
+            
+            );
 
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -39,6 +44,10 @@ namespace WebApiAutores
             services.AddTransient<ServiceTransient>();
             services.AddScoped<ServiceScoped>();
             services.AddSingleton<ServiceSingletone>();
+            services.AddTransient<MyFiltro>();
+            services.AddResponseCaching();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
             services.AddSwaggerGen(c =>
             {
@@ -61,6 +70,8 @@ namespace WebApiAutores
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
+            app.UseResponseCaching();
 
             app.UseAuthorization();
 

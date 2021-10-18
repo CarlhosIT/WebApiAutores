@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApiAutores.Entidades;
+using WebApiAutores.Filtros;
 using WebApiAutores.Servicios;
 
 namespace WebApiAutores.Controllers
@@ -18,7 +19,7 @@ namespace WebApiAutores.Controllers
         private readonly ServiceSingletone ssingletone;
         private readonly ServiceTransient stransient;
 
-        public AutoresController(ApplicationDbContext context,ServiceScoped Sscoped,ServiceSingletone Ssingletone,ServiceTransient Stransient)
+        public AutoresController(ApplicationDbContext context, ServiceScoped Sscoped, ServiceSingletone Ssingletone, ServiceTransient Stransient)
         {
             this.context = context;
             sscoped = Sscoped;
@@ -26,12 +27,15 @@ namespace WebApiAutores.Controllers
             stransient = Stransient;
         }
         [HttpGet]
+        [ServiceFilter(typeof(MyFiltro))]
         public async Task<ActionResult<List<Autor>>> Get()
         {
             return await context.Autores.ToListAsync();
 
         }
         [HttpGet("guid")]
+        [ResponseCache(Duration = 10)]
+        [ServiceFilter(typeof(MyFiltro))]
         public ActionResult<List<Autor>> GetGuid()
         {
             return Ok(new { AutoresControllerScoped = sscoped.guid, AutoresControllerTrasient = stransient.guid,AutoresControllerSIngleton=ssingletone.guid  });

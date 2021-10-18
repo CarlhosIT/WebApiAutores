@@ -58,3 +58,4 @@ C:\Users\carlh\source\repos\WebApiAutores\WebApiAutores\bin\Debug\net5.0\Azure.C
 C:\Users\carlh\source\repos\WebApiAutores\WebApiAutores\bin\Debug\net5.0\Azure.Identity.dll
 C:\Users\carlh\source\repos\WebApiAutores\WebApiAutores\bin\Debug\net5.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\carlh\source\repos\WebApiAutores\WebApiAutores\bin\Debug\net5.0\Microsoft.Identity.Client.Extensions.Msal.dll
+C:\Users\carlh\source\repos\WebApiAutores\WebApiAutores\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
