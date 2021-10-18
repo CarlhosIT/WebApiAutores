@@ -33,9 +33,9 @@ namespace WebApiAutores
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers(opcione => 
+            services.AddControllers(opcione =>
                 opcione.Filters.Add(typeof(FiltroExepcion))
-            
+
             );
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -53,6 +53,7 @@ namespace WebApiAutores
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApiAutores", Version = "v1" });
             });
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
