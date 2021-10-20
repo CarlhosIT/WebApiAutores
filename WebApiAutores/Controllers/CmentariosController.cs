@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,11 +20,14 @@ namespace WebApiAutores.Controllers {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
 
-        public CmentariosController(ApplicationDbContext context, IMapper mapper)
+        public CmentariosController(ApplicationDbContext context, IMapper mapper, UserManager<IdentityUser> UserManager)
         {
             this.context = context;
             this.mapper = mapper;
+            this.UserManager = UserManager;
         }
+
+        public UserManager<IdentityUser> UserManager { get; }
 
         [HttpGet]
         public async Task<ActionResult<List<ComentarioDTo>>> Get(int libroId)
@@ -41,8 +47,12 @@ namespace WebApiAutores.Controllers {
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> Post(int libroId, ComentarioCreacionDTO comentarioDTO)
         {
+            var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
+            var email = emailClaim.Value;
+            var Usuario = await UserManager.FindByEmailAsync(email);
             var existelibro = await context.Libros.AnyAsync(LibroDB => LibroDB.Id == libroId);
             if (!existelibro)
             {
@@ -51,9 +61,12 @@ namespace WebApiAutores.Controllers {
 
             var comentario = mapper.Map<Comentario>(comentarioDTO);
             comentario.LibroId = libroId;
+            comentario.UsuarioID = Usuario.Id;
             context.Add(comentario);
             await context.SaveChangesAsync();
+
             var comentariodto = mapper.Map<ComentarioDTo>(comentario);
+
             return CreatedAtRoute("obtenerComentario", new { id = comentario.Id, libroId = libroId }, comentariodto);
 
         }
@@ -63,7 +76,7 @@ namespace WebApiAutores.Controllers {
         {
             var existeLbro = await context.Libros.AnyAsync(LibroDB => LibroDB.Id == libroId);
             if (!existeLbro) { return NotFound("No se encontro el Libro"); }
-
+            
             var existeComentario = await context.Comentarios.AnyAsync(ComntarioBD => ComntarioBD.Id == id);
             if (!existeComentario) { return NotFound("No se encontro el comentario"); }
 

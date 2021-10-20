@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -35,6 +37,7 @@ namespace WebApiAutores.Controllers
 
         [HttpGet]
         [ServiceFilter(typeof(MyFiltro))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<List<AutorDTO>> Get()
         {
             var autores = await context.Autores.ToListAsync();
@@ -115,6 +118,7 @@ namespace WebApiAutores.Controllers
         }
         
         [HttpDelete("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy ="EsAdmin")]
         public async Task<ActionResult> Delete(int id) 
         {
             var existe = await context.Autores.AnyAsync(x => x.Id == id);

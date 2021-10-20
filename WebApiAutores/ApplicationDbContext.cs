@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -8,7 +9,7 @@ using WebApiAutores.Entidades;
 
 namespace WebApiAutores
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext([NotNullAttribute] DbContextOptions options) : base(options)
         {
@@ -18,6 +19,7 @@ namespace WebApiAutores
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<AutoresLibros>().HasKey(al=> new {al.AutorId, al.LibroId });
 
         }

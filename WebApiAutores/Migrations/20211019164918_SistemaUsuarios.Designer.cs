@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiAutores;
 
 namespace WebApiAutores.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211019164918_SistemaUsuarios")]
+    partial class SistemaUsuarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,14 +265,9 @@ namespace WebApiAutores.Migrations
                     b.Property<int>("LibroId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UsuarioID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("LibroId");
-
-                    b.HasIndex("UsuarioID");
 
                     b.ToTable("Comentarios");
                 });
@@ -373,13 +370,7 @@ namespace WebApiAutores.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioID");
-
                     b.Navigation("libro");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("WebApiAutores.Entidades.Autor", b =>

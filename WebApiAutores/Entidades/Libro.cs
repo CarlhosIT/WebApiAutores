@@ -14,7 +14,9 @@ namespace WebApiAutores.Entidades
         [PrimeraLetraMayuscula]
         [StringLength(maximumLength:200)]
         public String Titulo { get; set; }
-      
+
+        public DateTime?  FechaPublicacion { get; set; }
+
         public List<Comentario> Comentarios { get; set; }
 
         public List<AutoresLibros> autoresLibros { get; set; }

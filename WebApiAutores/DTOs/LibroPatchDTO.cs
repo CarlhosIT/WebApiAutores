@@ -7,14 +7,11 @@ using WebApiAutores.Validaciones;
 
 namespace WebApiAutores.DTOs
 {
-    public class LibroCreacionDTO
+    public class LibroPatchDTO
     {
         [PrimeraLetraMayuscula]
         [StringLength(maximumLength: 200)]
         public String Titulo { get; set; }
-
-        public List<int> AutoresId { get; set; }
-
         public DateTime FechaPublicacion { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace WebApiAutores.Entidades
         public String Contenido { get; set; }
         public int LibroId { get; set; }
         public Libro libro { get; set; }
-
+        public String  UsuarioID { get; set; }
+        public IdentityUser Usuario { get; set; }
     }
 }
